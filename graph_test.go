@@ -1,4 +1,4 @@
-package main
+package gropher
 
 import (
 	"encoding/json"
