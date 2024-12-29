@@ -1,13 +1,13 @@
 # gropher
 
-gropher is a high-performance, thread-safe graph library for Go that provides flexible data storage and serialization capabilities. Similar to Python's NetworkX, it allows storing arbitrary data in nodes while maintaining type safety and performance.
+gropher is a high-performance, thread-safe graph library for Go that provides flexible data storage and serialization capabilities. Similar to Python's NetworkX, it allows storing arbitrary data in Nodes while maintaining type safety and performance.
 
 ## Features
 
 - 🚀 High-performance graph operations
 - 🔒 Thread-safe implementation
 - 💾 JSON serialization support
-- 🎯 Generic data storage in nodes
+- 🎯 Generic data storage in Nodes
 - 📦 Easy to use API
 - 🧪 Comprehensive test coverage
 - 📝 Well-documented code
@@ -32,7 +32,7 @@ func main() {
     // Create a new graph
     g := gropher.New()
 
-    // Add nodes with any type of data
+    // Add Nodes with any type of data
     g.AddNode("1", "String data")
     g.AddNode("2", 42)
     g.AddNode("3", map[string]interface{}{
@@ -40,7 +40,7 @@ func main() {
         "value": 100,
     })
 
-    // Add edges
+    // Add Edges
     g.AddEdge("1", "2", 1.0)
     g.AddEdge("2", "3", 2.5)
 
@@ -107,7 +107,7 @@ err := g.LoadFromFile(filename string)
 
 ## Custom Data Types
 
-gropher supports any JSON-serializable data type in nodes:
+gropher supports any JSON-serializable data type in Nodes:
 
 ```go
 type PersonData struct {
@@ -177,7 +177,7 @@ We welcome contributions! Here's how you can help:
 
 - Node operations: O(1) average case
 - Edge operations: O(1) average case
-- Memory usage: O(|V| + |E|) where V is vertices and E is edges
+- Memory usage: O(|V| + |E|) where V is vertices and E is Edges
 - Thread-safe operations may have slight overhead due to mutex locks
 
 ## License

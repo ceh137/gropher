@@ -13,7 +13,7 @@ type Node struct {
 	Data interface{} `json:"data"`
 }
 
-// Edge represents a connection between two nodes
+// Edge represents a connection between two Nodes
 type Edge struct {
 	From   string  `json:"from"`
 	To     string  `json:"to"`
@@ -22,16 +22,16 @@ type Edge struct {
 
 // Graph represents a directed weighted graph
 type Graph struct {
-	nodes map[string]*Node
-	edges map[string]map[string]*Edge
+	Nodes map[string]*Node
+	Edges map[string]map[string]*Edge
 	mu    sync.RWMutex
 }
 
 // New creates a new empty graph
 func New() *Graph {
 	return &Graph{
-		nodes: make(map[string]*Node),
-		edges: make(map[string]map[string]*Edge),
+		Nodes: make(map[string]*Node),
+		Edges: make(map[string]map[string]*Edge),
 	}
 }
 
@@ -40,51 +40,51 @@ func (g *Graph) AddNode(id string, data interface{}) error {
 	g.mu.Lock()
 	defer g.mu.Unlock()
 
-	if _, exists := g.nodes[id]; exists {
+	if _, exists := g.Nodes[id]; exists {
 		return fmt.Errorf("node with ID %s already exists", id)
 	}
 
-	g.nodes[id] = &Node{
+	g.Nodes[id] = &Node{
 		ID:   id,
 		Data: data,
 	}
 
-	g.edges[id] = make(map[string]*Edge)
+	g.Edges[id] = make(map[string]*Edge)
 	return nil
 }
 
-// RemoveNode removes a node and all its edges from the graph
+// RemoveNode removes a node and all its Edges from the graph
 func (g *Graph) RemoveNode(id string) error {
 	g.mu.Lock()
 	defer g.mu.Unlock()
 
-	if _, exists := g.nodes[id]; !exists {
+	if _, exists := g.Nodes[id]; !exists {
 		return fmt.Errorf("node with ID %s does not exist", id)
 	}
 
-	// Remove all edges connected to this node
-	delete(g.edges, id)
-	for _, edges := range g.edges {
+	// Remove all Edges connected to this node
+	delete(g.Edges, id)
+	for _, edges := range g.Edges {
 		delete(edges, id)
 	}
 
-	delete(g.nodes, id)
+	delete(g.Nodes, id)
 	return nil
 }
 
-// AddEdge adds a new edge between two nodes
+// AddEdge adds a new edge between two Nodes
 func (g *Graph) AddEdge(from, to string, weight float64) error {
 	g.mu.Lock()
 	defer g.mu.Unlock()
 
-	if _, exists := g.nodes[from]; !exists {
+	if _, exists := g.Nodes[from]; !exists {
 		return fmt.Errorf("source node %s does not exist", from)
 	}
-	if _, exists := g.nodes[to]; !exists {
+	if _, exists := g.Nodes[to]; !exists {
 		return fmt.Errorf("destination node %s does not exist", to)
 	}
 
-	g.edges[from][to] = &Edge{
+	g.Edges[from][to] = &Edge{
 		From:   from,
 		To:     to,
 		Weight: weight,
@@ -92,16 +92,16 @@ func (g *Graph) AddEdge(from, to string, weight float64) error {
 	return nil
 }
 
-// RemoveEdge removes an edge between two nodes
+// RemoveEdge removes an edge between two Nodes
 func (g *Graph) RemoveEdge(from, to string) error {
 	g.mu.Lock()
 	defer g.mu.Unlock()
 
-	if _, exists := g.edges[from][to]; !exists {
+	if _, exists := g.Edges[from][to]; !exists {
 		return fmt.Errorf("edge from %s to %s does not exist", from, to)
 	}
 
-	delete(g.edges[from], to)
+	delete(g.Edges[from], to)
 	return nil
 }
 
@@ -110,33 +110,33 @@ func (g *Graph) GetNode(id string) (*Node, error) {
 	g.mu.RLock()
 	defer g.mu.RUnlock()
 
-	node, exists := g.nodes[id]
+	node, exists := g.Nodes[id]
 	if !exists {
 		return nil, fmt.Errorf("node with ID %s does not exist", id)
 	}
 	return node, nil
 }
 
-// GetNeighbors returns all nodes connected to the given node
+// GetNeighbors returns all Nodes connected to the given node
 func (g *Graph) GetNeighbors(id string) ([]*Node, error) {
 	g.mu.RLock()
 	defer g.mu.RUnlock()
 
-	if _, exists := g.nodes[id]; !exists {
+	if _, exists := g.Nodes[id]; !exists {
 		return nil, fmt.Errorf("node with ID %s does not exist", id)
 	}
 
 	var neighbors []*Node
-	for toID := range g.edges[id] {
-		neighbors = append(neighbors, g.nodes[toID])
+	for toID := range g.Edges[id] {
+		neighbors = append(neighbors, g.Nodes[toID])
 	}
 	return neighbors, nil
 }
 
 // graphData is used for JSON serialization
 type graphData struct {
-	Nodes []*Node                     `json:"nodes"`
-	Edges map[string]map[string]*Edge `json:"edges"`
+	Nodes []*Node                     `json:"Nodes"`
+	Edges map[string]map[string]*Edge `json:"Edges"`
 }
 
 // SaveToFile saves the graph to a JSON file
@@ -145,10 +145,10 @@ func (g *Graph) SaveToFile(filename string) error {
 	defer g.mu.RUnlock()
 
 	data := graphData{
-		Edges: g.edges,
+		Edges: g.Edges,
 	}
 
-	for _, node := range g.nodes {
+	for _, node := range g.Nodes {
 		data.Nodes = append(data.Nodes, node)
 	}
 
@@ -184,19 +184,19 @@ func (g *Graph) LoadFromFile(filename string) error {
 	}
 
 	// Clear existing graph
-	g.nodes = make(map[string]*Node)
-	g.edges = make(map[string]map[string]*Edge)
+	g.Nodes = make(map[string]*Node)
+	g.Edges = make(map[string]map[string]*Edge)
 
-	// Restore nodes
+	// Restore Nodes
 	for _, node := range data.Nodes {
-		g.nodes[node.ID] = node
-		g.edges[node.ID] = make(map[string]*Edge)
+		g.Nodes[node.ID] = node
+		g.Edges[node.ID] = make(map[string]*Edge)
 	}
 
-	// Restore edges
+	// Restore Edges
 	for fromID, edges := range data.Edges {
 		for toID, edge := range edges {
-			g.edges[fromID][toID] = edge
+			g.Edges[fromID][toID] = edge
 		}
 	}
 

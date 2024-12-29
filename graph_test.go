@@ -11,8 +11,8 @@ import (
 func TestNodeOperations(t *testing.T) {
 	g := New()
 
-	t.Run("Add Nodes", func(t *testing.T) {
-		// Test adding nodes with different data types
+	t.Run("Add modes", func(t *testing.T) {
+		// Test adding Nodes with different data types
 		testCases := []struct {
 			id   string
 			data interface{}
@@ -57,7 +57,7 @@ func TestNodeOperations(t *testing.T) {
 	})
 
 	t.Run("Remove Node", func(t *testing.T) {
-		// Add edges to test cascade deletion
+		// Add Edges to test cascade deletion
 		err := g.AddEdge("1", "2", 1.0)
 		if err != nil {
 			t.Errorf("Failed to add edge: %v", err)
@@ -79,7 +79,7 @@ func TestNodeOperations(t *testing.T) {
 			t.Error("Expected error when getting removed node")
 		}
 
-		// Verify edges are removed
+		// Verify Edges are removed
 		neighbors, err := g.GetNeighbors("2")
 		if err != nil {
 			t.Errorf("Failed to get neighbors: %v", err)
@@ -232,7 +232,7 @@ func TestGraphSerialization(t *testing.T) {
 			}
 		}
 
-		// Add edges
+		// Add Edges
 		edges := []struct {
 			from   string
 			to     string
@@ -264,7 +264,7 @@ func TestGraphSerialization(t *testing.T) {
 			t.Errorf("Failed to load graph: %v", err)
 		}
 
-		// Verify nodes
+		// Verify Nodes
 		for _, td := range testData {
 			node, err := newGraph.GetNode(td.id)
 			if err != nil {
@@ -279,7 +279,7 @@ func TestGraphSerialization(t *testing.T) {
 			}
 		}
 
-		// Verify edges
+		// Verify Edges
 		for _, edge := range edges {
 			neighbors, err := newGraph.GetNeighbors(edge.from)
 			if err != nil {
@@ -356,11 +356,11 @@ func TestGraphSerialization(t *testing.T) {
 		}
 
 		// Check for required fields
-		if _, ok := data["nodes"]; !ok {
-			t.Error("File content missing 'nodes' field")
+		if _, ok := data["Nodes"]; !ok {
+			t.Error("File content missing 'Nodes' field")
 		}
-		if _, ok := data["edges"]; !ok {
-			t.Error("File content missing 'edges' field")
+		if _, ok := data["Edges"]; !ok {
+			t.Error("File content missing 'Edges' field")
 		}
 
 		os.Remove(tempFile)
@@ -387,7 +387,7 @@ func TestGraphSerialization(t *testing.T) {
 	t.Run("Load Corrupted File", func(t *testing.T) {
 		// Create a file with invalid JSON
 		tempFile := "corrupted.json"
-		err := os.WriteFile(tempFile, []byte(`{"nodes": [{"id": "1", "data": "test"}, {invalid}`), 0644)
+		err := os.WriteFile(tempFile, []byte(`{"Nodes": [{"id": "1", "data": "test"}, {invalid}`), 0644)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -431,7 +431,7 @@ func TestGraphSerialization(t *testing.T) {
 			}
 		}
 
-		// Add some edges
+		// Add some Edges
 		for i := 0; i < 999; i++ {
 			err := g.AddEdge(
 				fmt.Sprintf("node%d", i),
@@ -458,11 +458,11 @@ func TestGraphSerialization(t *testing.T) {
 
 		// Verify node count
 		nodeCount := 0
-		for range newGraph.nodes {
+		for range newGraph.Nodes {
 			nodeCount++
 		}
 		if nodeCount != 1000 {
-			t.Errorf("Expected 1000 nodes, got %d", nodeCount)
+			t.Errorf("Expected 1000 Nodes, got %d", nodeCount)
 		}
 
 		os.Remove(tempFile)
@@ -475,7 +475,7 @@ func TestGraphSerialization(t *testing.T) {
 func TestConcurrency(t *testing.T) {
 	g := New()
 
-	// Setup initial nodes
+	// Setup initial Nodes
 	for i := 0; i < 5; i++ {
 		err := g.AddNode(string(rune('A'+i)), i)
 		if err != nil {
@@ -489,7 +489,7 @@ func TestConcurrency(t *testing.T) {
 			go func(i int) {
 				id := string(rune('A' + (i % 5)))
 
-				// Randomly get or modify nodes
+				// Randomly get or modify Nodes
 				if i%2 == 0 {
 					_, _ = g.GetNode(id)
 				} else {
@@ -512,7 +512,7 @@ func TestConcurrency(t *testing.T) {
 				from := string(rune('A' + (i % 5)))
 				to := string(rune('A' + ((i + 1) % 5)))
 
-				// Randomly add or remove edges
+				// Randomly add or remove Edges
 				if i%2 == 0 {
 					_ = g.AddEdge(from, to, float64(i))
 				} else {

@@ -41,7 +41,7 @@ type Edge struct {
 }
 ```
 
-Represents a directed weighted edge between two nodes.
+Represents a directed weighted edge between two Nodes.
 
 ## Functions
 
@@ -89,7 +89,7 @@ err := g.AddNode("1", map[string]interface{}{
 func (g *Graph) RemoveNode(id string) error
 ```
 
-Removes a node and all its connected edges from the graph.
+Removes a node and all its connected Edges from the graph.
 
 **Parameters:**
 - `id`: ID of the node to remove
@@ -103,7 +103,7 @@ Removes a node and all its connected edges from the graph.
 func (g *Graph) AddEdge(from string, to string, weight float64) error
 ```
 
-Adds a directed weighted edge between two nodes.
+Adds a directed weighted edge between two Nodes.
 
 **Parameters:**
 - `from`: Source node ID
@@ -119,7 +119,7 @@ Adds a directed weighted edge between two nodes.
 func (g *Graph) RemoveEdge(from string, to string) error
 ```
 
-Removes an edge between two nodes.
+Removes an edge between two Nodes.
 
 **Parameters:**
 - `from`: Source node ID
@@ -149,13 +149,13 @@ Retrieves a node by its ID.
 func (g *Graph) GetNeighbors(id string) ([]*Node, error)
 ```
 
-Gets all nodes connected to the specified node by outgoing edges.
+Gets all Nodes connected to the specified node by outgoing Edges.
 
 **Parameters:**
 - `id`: Node ID to get neighbors for
 
 **Returns:**
-- `[]*Node`: Slice of neighbor nodes
+- `[]*Node`: Slice of neighbor Nodes
 - `error`: If node doesn't exist
 
 ### SaveToFile
@@ -218,12 +218,12 @@ import (
 func main() {
     g := gropher.New()
 
-    // Add nodes
+    // Add Nodes
     g.AddNode("1", "Node 1")
     g.AddNode("2", "Node 2")
     g.AddNode("3", "Node 3")
 
-    // Add edges
+    // Add Edges
     g.AddEdge("1", "2", 1.0)
     g.AddEdge("2", "3", 2.0)
 
@@ -246,7 +246,7 @@ type Person struct {
 func main() {
     g := gropher.New()
 
-    // Add nodes with custom data
+    // Add Nodes with custom data
     g.AddNode("1", Person{Name: "Alice", Age: 30})
     g.AddNode("2", Person{Name: "Bob", Age: 25})
 
